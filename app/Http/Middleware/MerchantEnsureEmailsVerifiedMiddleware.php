@@ -16,14 +16,17 @@ class MerchantEnsureEmailsVerifiedMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
+
+        if (config('verification.way') == 'email')
         {
             if (!$request->user('merchant') ||
                 ($request->user('merchant') instanceof MustVerifyEmail &&
-                    !$request->user('merchant')->hasVerifiedEmail())) {
+                    !$request->user('merchant')->hasVerifiedEmail()))
+            {
                 return to_route('merchant.verification.notice');
             }
 
-            return $next($request);
         }
+        return $next($request);
     }
 }

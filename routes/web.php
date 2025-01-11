@@ -19,7 +19,6 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::prefix('merchant')->name('merchant.')->group(function () {
-
     Route::middleware([\App\Http\Middleware\MerchantMiddleware::class , MerchantEnsureEmailsVerifiedMiddleware::class])->group(function () {
         Route::view('/' , 'merchant.home')->name('index');
     });
