@@ -55,7 +55,7 @@
                                 </div>
                                 <div class="flex-grow-1">
                                     <span class="fw-semibold d-block">{{Auth::user()?->name}}</span>
-                                    <small class="text-muted">Admin</small>
+                                    <small class="text-muted">{{Auth::user()?->name}}</small>
                                 </div>
                             </div>
                         </a>
@@ -88,13 +88,13 @@
                         <div class="dropdown-divider"></div>
                     </li>
                     <li>
-                        <form action="{{route('logout')}}" method="post">
+                        <form action="{{route('merchant.logout')}}" method="post">
                            @csrf
-                            <a class="dropdown-item" href="javascript:{}"
+                            <button class="dropdown-item" href="javascript:{}"
                                 onclick="this.closest('form').submit();return false;">
                             <i class="bx bx-power-off me-2"></i>
                             <span class="align-middle">Log Out</span>
-                            </a>
+                            </button>
                         </form>
 
                     </li>

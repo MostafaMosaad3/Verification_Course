@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Middleware\MerchantEnsureEmailsVerifiedMiddleware;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -19,12 +20,12 @@ Route::middleware('auth')->group(function () {
 
 Route::prefix('merchant')->name('merchant.')->group(function () {
 
-    Route::middleware([\App\Http\Middleware\MerchantMiddleware::class])->group(function () {
+    Route::middleware([\App\Http\Middleware\MerchantMiddleware::class , MerchantEnsureEmailsVerifiedMiddleware::class])->group(function () {
         Route::view('/' , 'merchant.home')->name('index');
     });
 
     require __DIR__.'/MerchantAuth.php';
-    Route::view('/login' , 'merchant.auth.login')->name('login');
+
 });
 
 require __DIR__.'/auth.php';

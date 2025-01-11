@@ -6,9 +6,10 @@ use App\Http\Controllers\MerchantAuth\EmailVerificationPromptController;
 use App\Http\Controllers\MerchantAuth\RegisteredUserController;
 use App\Http\Controllers\MerchantAuth\VerifyEmailController;
 use App\Http\Middleware\GuestMiddleware;
+use App\Http\Middleware\MerchantMiddleware;
 use Illuminate\Support\Facades\Route;
 
-Route::middleware([GuestMiddleware::class .':merchants'])->group(function () {
+Route::middleware([GuestMiddleware::class .':merchant'])->group(function () {
     Route::get('register', [RegisteredUserController::class, 'create'])
         ->name('register');
 
@@ -20,7 +21,7 @@ Route::middleware([GuestMiddleware::class .':merchants'])->group(function () {
     Route::post('login', [AuthenticatedSessionController::class, 'store']);
 });
 
-Route::middleware('auth')->group(function () {
+Route::middleware(MerchantMiddleware::class)->group(function () {
     Route::get('verify-email', EmailVerificationPromptController::class)
         ->name('verification.notice');
 

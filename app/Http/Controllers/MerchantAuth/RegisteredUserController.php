@@ -44,7 +44,7 @@ class RegisteredUserController extends Controller
 
         event(new Registered($user));
 
-        Auth::guard('merchants')->login($user);
+        Auth::guard('merchant')->login($user);
 
         return to_route('merchant.index');
     }

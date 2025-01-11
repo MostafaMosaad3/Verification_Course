@@ -16,7 +16,7 @@ class MerchantMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if(!Auth::guard('merchants')->check()){
+        if(!Auth::guard('merchant')->check()){
             return to_route('merchant.login');
         }
         return $next($request);
