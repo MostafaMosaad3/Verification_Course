@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Merchant;
+use App\Services\twilio;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
@@ -25,6 +26,13 @@ class OtpAuthenticationController extends Controller
         }
 
         $merchant->generate_otp();
+        if(config('verification.otp_provider') == 'twilio'){
+            (new twilio())->send($merchant);
+        }
+
+        if(config('verification.otp_provider') == 'vonage'){
+            (new vonage())->send($merchant);
+        }
 
         return view('merchant.auth.otp-authenticated' , ['email' =>$merchant->email]);
     }

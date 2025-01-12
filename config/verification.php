@@ -7,5 +7,6 @@ return [
     //'cvt' => 'verify using custom verification token'
     //'passwordless' =>'making authentication and verification without password'
     //'otp' => 'verifying using one time password'
-    "way" => "otp"
+    "way" => "otp" ,
+    "otp_provider" =>"vonage"
 ] ;
