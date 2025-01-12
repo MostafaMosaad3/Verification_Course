@@ -6,6 +6,7 @@ use App\Http\Controllers\MerchantAuth\EmailVerificationNotificationController;
 use App\Http\Controllers\MerchantAuth\EmailVerificationPromptController;
 use App\Http\Controllers\MerchantAuth\RegisteredUserController;
 use App\Http\Controllers\MerchantAuth\VerifyEmailController;
+use App\Http\Controllers\OtpAuthenticationController;
 use App\Http\Controllers\PasswordlessVerificationController;
 use App\Http\Middleware\GuestMiddleware;
 use App\Http\Middleware\MerchantMiddleware;
@@ -26,6 +27,11 @@ Route::middleware([GuestMiddleware::class .':merchant'])->group(function () {
         Route::get('verify-email/{id}', [PasswordlessVerificationController::class , 'verify'])
             ->middleware(['signed', 'throttle:6,1'])
             ->name('login.verify');
+    }
+    elseif(config('verification.way') == 'otp')
+    {
+        Route::post('login', [OtpAuthenticationController::class, 'store']);
+        Route::post('verify-otp', [OtpAuthenticationController::class, 'verify'])->name('verify.otp');
     }
     else
     {

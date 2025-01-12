@@ -6,5 +6,6 @@ return [
     //'email' => 'verify email after register'
     //'cvt' => 'verify using custom verification token'
     //'passwordless' =>'making authentication and verification without password'
-    "way" => "passwordless"
+    //'otp' => 'verifying using one time password'
+    "way" => "otp"
 ] ;
