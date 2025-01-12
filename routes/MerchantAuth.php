@@ -6,6 +6,7 @@ use App\Http\Controllers\MerchantAuth\EmailVerificationNotificationController;
 use App\Http\Controllers\MerchantAuth\EmailVerificationPromptController;
 use App\Http\Controllers\MerchantAuth\RegisteredUserController;
 use App\Http\Controllers\MerchantAuth\VerifyEmailController;
+use App\Http\Controllers\PasswordlessVerificationController;
 use App\Http\Middleware\GuestMiddleware;
 use App\Http\Middleware\MerchantMiddleware;
 use Illuminate\Support\Facades\Route;
@@ -19,7 +20,17 @@ Route::middleware([GuestMiddleware::class .':merchant'])->group(function () {
     Route::get('login', [AuthenticatedSessionController::class, 'create'])
         ->name('login');
 
-    Route::post('login', [AuthenticatedSessionController::class, 'store']);
+    if(config('verification.way') == 'passwordless')
+    {
+        Route::post('login', [PasswordlessVerificationController::class, 'store']);
+        Route::get('verify-email/{id}', [PasswordlessVerificationController::class , 'verify'])
+            ->middleware(['signed', 'throttle:6,1'])
+            ->name('login.verify');
+    }
+    else
+    {
+        Route::post('login', [AuthenticatedSessionController::class, 'store']);
+    }
 });
 
 Route::middleware(MerchantMiddleware::class)->group(function () {

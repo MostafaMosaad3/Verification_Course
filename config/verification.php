@@ -5,5 +5,6 @@ return [
     //'default' => 'without any verification'
     //'email' => 'verify email after register'
     //'cvt' => 'verify using custom verification token'
-    "way" => "cvt"
+    //'passwordless' =>'making authentication and verification without password'
+    "way" => "passwordless"
 ] ;

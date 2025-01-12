@@ -35,6 +35,14 @@ class Merchant extends Authenticatable implements MustVerifyEmail
             $this->notify(new MerchantEmailVerficationNotification($url));
         }
 
+        if (config('verification.way') == 'passwordless')
+        {
+            $url = URL::temporarySignedRoute(
+                'merchant.login.verify', now()->addMinutes(30),
+                ['id' => $this->getKey()]
+            );
+            $this->notify(new MerchantEmailVerficationNotification($url));
+        }
     }
 
     public function generate_verification_token()

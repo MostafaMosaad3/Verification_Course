@@ -32,6 +32,8 @@
                                 >
                                 <x-input-error :messages="$errors->get('email')" class="mt-2" />
                             </div>
+                            @if(!config('verification.way') == 'passwordless')
+
                             <div class="mb-3 form-password-toggle">
                                 <div class="d-flex justify-content-between">
                                     <label class="form-label" for="password">Password</label>
@@ -58,6 +60,7 @@
                                     <label class="form-check-label" for="remember-me"> Remember Me </label>
                                 </div>
                             </div>
+                            @endif
                             <div class="mb-3">
                                 <button class="btn btn-primary d-grid w-100" type="submit">Sign in</button>
                             </div>
