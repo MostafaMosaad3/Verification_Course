@@ -17,7 +17,7 @@ class MerchantEnsureEmailsVerifiedMiddleware
     public function handle(Request $request, Closure $next): Response
     {
 
-        if (config('verification.way') == 'email')
+        if (config('verification.way') == 'email' || config('verification.way') == 'cvt')
         {
             if (!$request->user('merchant') ||
                 ($request->user('merchant') instanceof MustVerifyEmail &&
@@ -27,6 +27,7 @@ class MerchantEnsureEmailsVerifiedMiddleware
             }
 
         }
+
         return $next($request);
     }
 }

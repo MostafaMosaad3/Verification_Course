@@ -4,5 +4,6 @@ return [
     // verification techniques
     //'default' => 'without any verification'
     //'email' => 'verify email after register'
-    "way" => "default"
+    //'cvt' => 'verify using custom verification token'
+    "way" => "cvt"
 ] ;

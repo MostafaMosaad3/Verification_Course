@@ -9,23 +9,52 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Str;
 
 class Merchant extends Authenticatable implements MustVerifyEmail
 {
     use HasFactory, Notifiable;
 
-    protected $guarded = ['id'] ;
+    protected $guarded = [ ] ;
 
     public function sendEmailVerificationNotification()
     {
         if (config('verification.way') == 'email')
         {
             $url = URL::temporarySignedRoute(
-                'merchant.verification.verify', now()->addMinutes(30),
+                'merchant.verification.verify', $date = now()->addMinutes(30),
                 ['id' => $this->getKey() , 'hash'=>sha1($this->getEmailForVerification())]
             );
             $this->notify(new MerchantEmailVerficationNotification($url));
         }
 
+        if (config('verification.way') == 'cvt')
+        {
+            $this->generate_verification_token();
+            $url = route('merchant.verification.verify', ['id' => $this->getKey(),'token'=>$this->verification_token]);
+            $this->notify(new MerchantEmailVerficationNotification($url));
+        }
+
+    }
+
+    public function generate_verification_token()
+    {
+        if (config('verification.way') == 'cvt')
+        {
+            $this->verification_token = Str::random(40);
+            $this->verification_token_expires_at = now()->addMinutes(30);
+            $this->save();
+        }
+    }
+
+    public function verify_verification_token()
+    {
+        if (config('verification.way') == 'cvt')
+        {
+            $this->email_verified_at = now() ;
+            $this->verification_token = null ;
+            $this->verification_token_expires_at = null ;
+            $this->save();
+        }
     }
 }
