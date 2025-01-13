@@ -3,6 +3,7 @@
 @section('title' , 'register')
 
 @section('content')
+    <script src="https://www.google.com/recaptcha/api.js"></script>
     <div class="container-xxl">
         <div class="authentication-wrapper authentication-basic container-p-y">
             <div class="authentication-inner">
@@ -51,7 +52,17 @@
                                 <x-input-error :messages="$errors->get('password')" class="mt-2" />
                             </div>
 
-                            <button class="btn btn-primary d-grid w-100">Sign up</button>
+                            <button class="g-recaptcha btn btn-primary d-grid w-100"
+                                    data-sitekey="{{env('RECAPTCHA_SITE_KEY')}}"
+                                    data-callback='onSubmit'
+                                    data-action='submit'>Sign UP</button>
+
+
+                            <script>
+                                function onSubmit(token) {
+                                    document.getElementById("formAuthentication").submit();
+                                }
+                            </script>
                         </form>
 
                         <p class="text-center">
